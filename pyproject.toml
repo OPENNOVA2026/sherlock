@@ -1,0 +1,56 @@
+[tool.poetry]
+name = "sherlock"
+version = "0.1.0"
+description = ""
+authors = [
+    "David Leirado Maroto <https://github.com/DavidLeirado>",
+    "Oscar Delgado <https://github.com/oscar-delgado>"
+    ]
+readme = "README.md"
+package-mode=false
+
+[tool.poetry.dependencies]
+python = "3.11.13"
+boto3 = "^1.40.32"
+pydantic = "^2.11.9"
+pydantic-settings = "^2.10.1"
+igraph = "^0.11.9"
+pyvis = "^0.3.2"
+numpy = "<2.0"
+python-docx = "^1.2.0"
+click = "^8.3.0"
+celery = "^5.6.0"
+sentry-sdk = {extras = ["celery"], version = "^2.49.0"}
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.12.7"
+watchdog = "^6.0.0"
+pytest = "^8.4.2"
+pytest-cov = "^7.0.0"
+
+[tool.pytest.ini_options]
+addopts = "--cov=src --cov-report=term-missing:skip-covered"
+markers = [
+    "s3_client_tests: Tests mean to run with low lvl mocking features",
+    "no_patch_open_and_makedirs: disable patch_open_and_makedirs autouse fixture for this test"
+]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+omit = [
+    "src/core/celery_app.py",
+    "src/core/celeryconfig.py",
+    "src/core/logger.py"
+]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 75
+
+[tool.ruff.lint]
+select = ["N", "E", "W", "F", "UP", "SIM", "I", "FAST"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
